@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心理健康科普——抑郁症</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #FFF9E6 0%, #FFE8D6 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* 标题样式 */
+        h1 {
+            text-align: center;
+            color: #FF6B6B;
+            font-size: 2.5em;
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #4ECDC4;
+            font-size: 1.8em;
+            margin: 25px 0 15px;
+            border-bottom: 3px solid #4ECDC4;
+            padding-bottom: 8px;
+        }
+        /* 卡片样式 */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        /* 重要事实列表 */
+        .facts-list {
+            list-style: none;
+        }
+        .facts-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        .facts-list li::before {
+            content: '🌟';
+            position: absolute;
+            left: 0;
+        }
+        /* 误区按钮 */
+        .myth-btn {
+            background: #FFE066;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1em;
+            border-radius: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .myth-btn:hover {
+            background: #FFD93D;
+            transform: translateX(5px);
+        }
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #999;
+        }
+        /* 典型一天漫画布局 */
+        .day-comic {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .comic-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .comic-character {
+            font-size: 5em;
+            display: block;
+            margin: 10px 0;
+        }
+        .time-badge {
+            display: inline-block;
+            background: #4ECDC4;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        /* PHQ-9表格 */
+        .phq9-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .phq9-table th, .phq9-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .phq9-table th {
+            background: #4ECDC4;
+            color: white;
+        }
+        .phq9-table td:first-child {
+            text-align: left;
+        }
+        /* 按钮样式 */
+        .btn {
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #FF5252;
+            transform: scale(1.05);
+        }
+        /* 结果显示 */
+        .result {
+            background: #E8F8F5;
+            border-left: 5px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        /* 自我保健列表 */
+        .self-care-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .self-care-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .self-care-icon {
+            font-size: 2.5em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        /* 知识闯关 */
+        .quiz-question {
+            margin: 20px 0;
+        }
+        .quiz-option {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f0f0f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .quiz-option:hover {
+            background: #e0e0e0;
+        }
+        .quiz-option.correct {
+            background: #A8E6CF !important;
+        }
+        .quiz-option.wrong {
+            background: #FFB3B3 !important;
+        }
+        /* 热线表格 */
+        .hotline-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        .hotline-table th, .hotline-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .hotline-table th {
+            background: #FFE066;
+        }
+        /* 参考文献 */
+        .references {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌈 心理健康科普——抑郁症</h1>
+        
+        <!-- 一、重要事实 -->
+        <section>
+            <h2>一、重要事实</h2>
+            <div class="card">
+                <ul class="facts-list">
+                    <li>抑郁症是一种常见的精神障碍。</li>
+                    <li>据估计，全球有5.7%的成年人患有抑郁症。</li>
+                    <li>受抑郁症影响的女性比男性更多。</li>
+                    <li>抑郁症可导致自杀。</li>
+                    <li>已有对轻度、中度和重度抑郁症行之有效的治疗方法。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 二、症状与误区 -->
+        <section>
+            <h2>二、症状与常见误区</h2>
+            <div class="card">
+                <p>抑郁障碍（也称抑郁症）是一种常见的精神障碍，涉及长时间情绪低落或失去快乐或对活动的兴趣。在抑郁发作期间，一个人会经历抑郁情绪（感到悲伤、烦躁、空虚），可能会感到失去乐趣或对活动的兴趣。</p>
+                <p style="margin-top: 15px;"><strong>抑郁发作不同于正常的情绪波动。</strong>抑郁情绪几乎每天都会发作，在一天中的大部分时间持续，至少持续两周。</p>
+                <p style="margin-top: 15px;">还存在其他症状，其中可能包括：</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>注意力不集中</li>
+                    <li>过度内疚或自我价值感低下</li>
+                    <li>对未来感到绝望</li>
+                    <li>有死亡或自杀的想法</li>
+                    <li>睡眠紊乱</li>
+                    <li>食欲或体重变化</li>
+                    <li>感觉非常疲倦或精力不足</li>
+                </ul>
+            </div>
+
+            <h3 style="color: #FF6B6B; margin: 25px 0 15px;">❌ 常见误区（点击查看真相）</h3>
+            
+            <button class="myth-btn" onclick="openModal('myth1')">抑郁症就是“想太多”“太矫情”“没什么大不了” ❌</button>
+            <button class="myth-btn" onclick="openModal('myth2')">有抑郁情绪就是得了抑郁症 ❌</button>
+            <button class="myth-btn" onclick="openModal('myth3')">乐观开朗的人就不会患有抑郁症 ❌</button>
+            <button class="myth-btn" onclick="openModal('myth4')">靠自己的意志力就能够战胜抑郁症 ❌</button>
+        </section>
+
+        <!-- 优化后的典型抑郁症的一天 - 使用统一卡通人物 -->
+        <section>
+            <h2>典型抑郁症的一天</h2>
+            <div class="day-comic">
+                <div class="comic-panel">
+                    <span class="time-badge">🌅 早晨</span>
+                    <span class="comic-character">😰</span>
+                    <h4>早晨情绪低落</h4>
+                    <p>四五点就醒来，胡思乱想，疲劳不堪，不想起床。</p>
+                </div>
+                <div class="comic-panel">
+                    <span class="time-badge">☀️ 上午</span>
+                    <span class="comic-character">😔</span>
+                    <h4>上午忍受煎熬</h4>
+                    <p>做事不在状态，难以集中注意力，想振作却心有余力不足。</p>
+                </div>
+                <div class="comic-panel">
+                    <span class="time-badge">🌤️ 午后</span>
+                    <span class="comic-character">😐</span>
+                    <h4>午后稍稍减轻</h4>
+                    <p>精神状态开始转折，心理压力逐渐减轻。</p>
+                </div>
+                <div class="comic-panel">
+                    <span class="time-badge">🌅 黄昏</span>
+                    <span class="comic-character">🙂</span>
+                    <h4>黄昏有所好转</h4>
+                    <p>感到轻松，疲乏感减轻，稍有兴趣做家事。</p>
+                </div>
+                <div class="comic-panel">
+                    <span class="time-badge">🌙 晚上</span>
+                    <span class="comic-character">😊</span>
+                    <h4>晚上状态尚好</h4>
+                    <p>最爽的时光，谈吐轻松自在，像恢复正常一样。</p>
+                </div>
+                <div class="comic-panel">
+                    <span class="time-badge">😴 睡前</span>
+                    <span class="comic-character">😟</span>
+                    <h4>睡前又起焦虑</h4>
+                    <p>担心入睡、早醒，联想到心理状态变化，次日抑郁前兆。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 三、成因 -->
+        <section>
+            <h2>三、成因</h2>
+            <div class="card">
+                <p>抑郁症的原因包括遗传、生物化学、环境和心理社会因素：</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>遗传因素：</strong>抑郁症有家族聚集现象，亲属患病率比普通人群高。</li>
+                    <li><strong>生物化学因素：</strong>脑内化学物质失衡，如血清素和去甲肾上腺素等。</li>
+                    <li><strong>环境因素：</strong>生活中的压力事件，如失业、亲人过世等。</li>
+                    <li><strong>心理社会因素：</strong>个体的人格特质、应对方式和社交支持等。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 四、筛查和诊断 -->
+        <section>
+            <h2>四、筛查和诊断</h2>
+            <div class="card">
+                <p>抑郁症的诊断通常由专业医生进行，包括询问病史、体格检查和心理评估等。心理评估包括患者自评和医生他评，以确定症状的严重程度和排除其他疾病。</p>
+                <p style="margin-top: 15px; color: #FF6B6B;"><strong>⚠️ PHQ-9仅作为筛查抑郁症的初步工具，不能代替专业医生的诊断。</strong></p>
+            </div>
+
+            <h3 style="color: #4ECDC4; margin: 25px 0 15px;">PHQ-9抑郁症筛查量表</h3>
+            <div class="card">
+                <p style="margin-bottom: 15px;">在过去的两周里，以下哪些问题困扰着你？</p>
+                <table class="phq9-table" id="phq9Table">
+                    <thead>
+                        <tr>
+                            <th>问题</th>
+                            <th>完全不会<br>（0分）</th>
+                            <th>几天<br>（1分）</th>
+                            <th>超过一半的天数<br>（2分）</th>
+                            <th>几乎每天<br>（3分）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1. 对做事缺乏兴趣或愉悦感</td>
+                            <td><input type="radio" name="q1" value="0"></td>
+                            <td><input type="radio" name="q1" value="1"></td>
+                            <td><input type="radio" name="q1" value="2"></td>
+                            <td><input type="radio" name="q1" value="3"></td>
+                        </tr>
+                        <tr>
+                            <td>2. 感到沮丧、抑郁或绝望</td>
+                            <td><input type="radio" name="q2" value="0"></td>
+                            <td><input type="radio" name="q2" value="1"></td>
+                            <td><input type="radio" name="q2" value="2"></td>
+                            <td><input type="radio" name="q2" value="3"></td>
+                        </tr>
+                        <tr>
+                            <td>3. 难以入睡或保持睡眠，或睡得太多</td>
+                            <td><input type="radio" name="q3" value="0"></td>
+                            <td><input type="radio" name="q3" value="1"></td>
+                            <td><input type="radio" name="q3" value="2"></td>
+                            <td><input type="radio" name="q3" value="3"></td>
+                        </tr>
+                        <tr>
+                            <td>4. 感到疲劳或无精打采</td>
+                            <td><input type="radio" name="q4" value="0"></td>
+                            <td><input type="radio" name="q4" value="1"></td>
+                            <td><input type="radio" name="q4" value="2"></td>
+                            <td><input type="radio" name="q4" value="3"></td>
+                        </tr>
+                        <tr>
+                            <td>5. 食欲不振或暴饮暴食</td>
+                            <td><input type="radio" name="q5" value="0"></td>
+                            <td><input type="radio" name="q5" value="1"></td>
+                            <td><input type="radio" name="q5" value="2"></td>
+                            <td><input type="radio" name="q5" value="3"></td>
+                        </tr>
+                        <tr>
+                            <td>6. 感到自己不好——或者认为自己是失败者，或让自己或家人失望</td>
+                            <td><input type="radio" name="q6" value="0"></td>
+                            <td><input type="radio" name="q6" value="1"></td>
+                            <td><input type="radio" name="q6" value="2"></td>
+                            <td><input type="radio" name="q6" value="3"></td>
+                        </tr>
+                        <tr>
+                            <td>7. 注意很难集中，例如阅读报纸或看电视</td>
+                            <td><input type="radio" name="q7" value="0"></td>
+                            <td><input type="radio" name="q7" value="1"></td>
+                            <td><input type="radio" name="q7" value="2"></td>
+                            <td><input type="radio" name="q7" value="3"></td>
+                        </tr>
+                        <tr>
+                            <td>8. 动作或说话速度缓慢到别人可察觉的程度，或正好相反——比平时更坐立不安或烦躁不安</td>
+                            <td><input type="radio" name="q8" value="0"></td>
+                            <td><input type="radio" name="q8" value="1"></td>
+                            <td><input type="radio" name="q8" value="2"></td>
+                            <td><input type="radio" name="q8" value="3"></td>
+                        </tr>
+                        <tr>
+                            <td>9. 有希望自己死去或以某种方式伤害自己的想法</td>
+                            <td><input type="radio" name="q9" value="0"></td>
+                            <td><input type="radio" name="q9" value="1"></td>
+                            <td><input type="radio" name="q9" value="2"></td>
+                            <td><input type="radio" name="q9" value="3"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn" onclick="calculatePHQ9()">查看筛查结果</button>
+                <div id="phq9Result" class="result" style="display: none;"></div>
+            </div>
+        </section>
+
+        <!-- 五、治疗 -->
+        <section>
+            <h2>五、治疗</h2>
+            <div class="card">
+                <p>抑郁症的治疗主要包括药物治疗和心理治疗：</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>药物治疗：</strong>通常需要服用抗抑郁药物，如选择性5-羟色胺再摄取抑制剂（SSRI）和三环抗抑郁药等。</li>
+                    <li><strong>心理治疗：</strong>包括认知行为疗法（CBT）和心理动力疗法等。</li>
+                </ul>
+                <p style="margin-top: 15px;">治疗需要个体化，根据患者的病情和医生的建议来制定。</p>
+            </div>
+        </section>
+
+        <!-- 自我保健 -->
+        <section>
+            <h2>六、自我保健</h2>
+            <div class="self-care-list">
+                <div class="self-care-item">
+                    <span class="self-care-icon">🎨</span>
+                    尝试继续从事你曾经喜欢的活动
+                </div>
+                <div class="self-care-item">
+                    <span class="self-care-icon">💬</span>
+                    与朋友和家人保持联系
+                </div>
+                <div class="self-care-item">
+                    <span class="self-care-icon">🚶</span>
+                    定期锻炼，即使只是散散步
+                </div>
+                <div class="self-care-item">
+                    <span class="self-care-icon">⏰</span>
+                    尽可能坚持规律的饮食和睡眠习惯
+                </div>
+                <div class="self-care-item">
+                    <span class="self-care-icon">🚫</span>
+                    避免或减少饮酒，不要使用非法药物
+                </div>
+                <div class="self-care-item">
+                    <span class="self-care-icon">❤️</span>
+                    与你信任的人谈谈你的感受
+                </div>
+                <div class="self-care-item">
+                    <span class="self-care-icon">👨‍⚕️</span>
+                    向卫生保健提供者寻求帮助
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 25px; background: #FFE8D6;">
+                <h3 style="color: #FF6B6B; margin-bottom: 15px;">如果你有自杀念头：</h3>
+                <ul style="margin-left: 20px;">
+                    <li>请记住，你并不孤单，许多人都经历过你正在经历的事情并找到了帮助</li>
+                    <li>与你信任的人谈谈你的感受</li>
+                    <li>与卫生工作者交谈，例如医生或咨询师</li>
+                    <li>加入支持小组</li>
+                </ul>
+                <p style="margin-top: 15px; color: #FF6B6B;"><strong>如果你认为你有伤害自己的直接危险，请联系任何可用的紧急服务或危机热线。</strong></p>
+            </div>
+        </section>
+
+        <!-- 七、家人或朋友抑郁症怎么办 -->
+        <section>
+            <h2>七、家人或朋友抑郁症怎么办（点击查看详情）</h2>
+            
+            <button class="myth-btn" onclick="openModal('family1')">1. 克服耻感，了解抑郁症</button>
+            <button class="myth-btn" onclick="openModal('family2')">2. 做一个倾听者，保持开放和理解</button>
+            <button class="myth-btn" onclick="openModal('family3')">3. 设定支持边界，照顾好自己</button>
+            <button class="myth-btn" onclick="openModal('family4')">4. 温柔地督促治疗</button>
+            <button class="myth-btn" onclick="openModal('family5')">5. 识别危险征兆</button>
+        </section>
+
+        <!-- 八、心理健康知识闯关 -->
+        <section>
+            <h2>八、心理健康知识闯关</h2>
+            <div class="card" id="quizContainer">
+                <div class="quiz-question" data-answer="B">
+                    <p><strong>1. 抑郁症是什么？</strong></p>
+                    <label class="quiz-option" data-option="A">A. 只是心情不好、矫情，自己调节就能痊愈</label>
+                    <label class="quiz-option" data-option="B">B. 一种与大脑神经、遗传、环境等相关的常见精神心理疾病</label>
+                    <label class="quiz-option" data-option="C">C. 性格软弱、意志力薄弱的人才会患上</label>
+                </div>
+                <div class="quiz-question" data-answer="A">
+                    <p><strong>2. 抑郁症的典型核心症状是？</strong></p>
+                    <label class="quiz-option" data-option="A">A. 持续两周以上情绪低落、兴趣减退、失去愉悦感，常伴失眠、乏力等</label>
+                    <label class="quiz-option" data-option="B">B. 只是偶尔不开心、容易发脾气</label>
+                    <label class="quiz-option" data-option="C">C. 只有大哭大闹、情绪崩溃才算抑郁症</label>
+                </div>
+                <div class="quiz-question" data-answer="C">
+                    <p><strong>3. 抑郁症的发病原因主要是？</strong></p>
+                    <label class="quiz-option" data-option="A">A. 完全是个人想太多、钻牛角尖造成的</label>
+                    <label class="quiz-option" data-option="B">B. 因为生活太清闲、日子太安逸才会得病</label>
+                    <label class="quiz-option" data-option="C">C. 遗传、神经生化、心理压力、社会环境等多因素共同作用</label>
+                </div>
+                <div class="quiz-question" data-answer="B">
+                    <p><strong>4. 抑郁症该如何正确诊断和救助？</strong></p>
+                    <label class="quiz-option" data-option="A">A. 自己凭情绪感受判断，不用看医生</label>
+                    <label class="quiz-option" data-option="B">B. 由精神科 / 心理科专业医生评估诊断，可拨打心理援助热线求助</label>
+                    <label class="quiz-option" data-option="C">C. 普通内科、中医科即可诊断并治疗抑郁症</label>
+                </div>
+                <div class="quiz-question" data-answer="C">
+                    <p><strong>5. 抑郁症最科学有效的治疗方式是？</strong></p>
+                    <label class="quiz-option" data-option="A">A. 依靠意志力硬扛，时间久了就能自愈</label>
+                    <label class="quiz-option" data-option="B">B. 喝酒、放纵玩乐缓解情绪就能治好</label>
+                    <label class="quiz-option" data-option="C">C. 接受专业规范治疗（药物 + 心理 + 物理治疗等，遵医嘱）</label>
+                </div>
+                <div class="quiz-question" data-answer="A">
+                    <p><strong>6. 如何帮助身边的抑郁症朋友？</strong></p>
+                    <label class="quiz-option" data-option="A">A. 耐心陪伴、认真倾听，鼓励并陪同他寻求专业帮助</label>
+                    <label class="quiz-option" data-option="B">B. 反复讲大道理，劝他 “想开点、别矫情”</label>
+                    <label class="quiz-option" data-option="C">C. 强行拉他社交、旅游，逼迫他快速好转</label>
+                </div>
+                <button class="btn" onclick="submitQuiz()">提交答案</button>
+                <div id="quizResult" class="result" style="display: none;"></div>
+            </div>
+        </section>
+
+        <!-- 心理援助热线 -->
+        <section>
+            <h2>📞 心理援助热线</h2>
+            <div class="card">
+                <p style="font-size: 1.2em; color: #FF6B6B; margin-bottom: 15px;"><strong>全国统一心理援助热线：12356</strong></p>
+                <p style="color: #666;">💡 注：12356是国家卫健委最新启用的全国统一心理援助热线，将于2025年开始逐步整合各地热线，实现一个号码联通，拨打时需加上各地区号。该热线兼具心理倾诉与危机干预双重服务功能。</p>
+            </div>
+
+            <div class="card" style="overflow-x: auto;">
+                <table class="hotline-table">
+                    <thead>
+                        <tr>
+                            <th>省市自治区</th>
+                            <th>热线名称</th>
+                            <th>电话号码</th>
+                            <th>开通时段</th>
+                            <th>所属机构</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>北京</td>
+                            <td>北京市心理援助热线</td>
+                            <td>010-82951332</td>
+                            <td>24小时</td>
+                            <td>北京回龙观医院</td>
+                        </tr>
+                        <tr>
+                            <td>天津</td>
+                            <td>天津市心理援助热线</td>
+                            <td>022-88188858</td>
+                            <td>24小时</td>
+                            <td>天津市卫健委</td>
+                        </tr>
+                        <tr>
+                            <td>河北</td>
+                            <td>河北省心理援助热线</td>
+                            <td>0312-96312</td>
+                            <td>24小时</td>
+                            <td>河北省第六人民医院</td>
+                        </tr>
+                        <tr>
+                            <td>山西</td>
+                            <td>山西省心理援助热线</td>
+                            <td>0351-8726199</td>
+                            <td>24小时</td>
+                            <td>山西省精神卫生中心</td>
+                        </tr>
+                        <tr>
+                            <td>辽宁</td>
+                            <td>沈阳市心理援助热线</td>
+                            <td>024-23813000</td>
+                            <td>24小时</td>
+                            <td>沈阳市精神卫生中心</td>
+                        </tr>
+                        <tr>
+                            <td>吉林</td>
+                            <td>吉林省心理援助热线</td>
+                            <td>0434-5079510</td>
+                            <td>24小时</td>
+                            <td>吉林省神经精神病医院</td>
+                        </tr>
+                        <tr>
+                            <td>黑龙江</td>
+                            <td>哈尔滨市心理援助热线</td>
+                            <td>0451-82480130</td>
+                            <td>24小时</td>
+                            <td>哈尔滨市第一专科医院</td>
+                        </tr>
+                        <tr>
+                            <td>上海</td>
+                            <td>上海市心理援助热线</td>
+                            <td>021-962525-1</td>
+                            <td>24小时</td>
+                            <td>上海市精神卫生中心</td>
+                        </tr>
+                        <tr>
+                            <td>江苏</td>
+                            <td>苏州市心理援助热线</td>
+                            <td>0512-65791001</td>
+                            <td>24小时</td>
+                            <td>苏州市心理健康协会</td>
+                        </tr>
+                        <tr>
+                            <td>浙江</td>
+                            <td>杭州市心理援助热线</td>
+                            <td>0571-85029595</td>
+                            <td>24小时</td>
+                            <td>杭州市第七人民医院</td>
+                        </tr>
+                              <tr>
+                              <td>安徽</td>
+                              <td>合肥市心理援助热线</td>
+                              <td>0551-63666903</td>
+                              <td>24小时</td>
+                              <td>合肥市第四人民医院</td>
+                              </tr>
+                              <tr>
+                              <td>福建</td>
+                              <td>福州市心理援助热线</td>
+                              <td>0591-8566661</td>
+                              <td>24小时</td>
+                              <td>福州神经精神病防治院</td>
+                              </tr>
+                              <tr>
+                              <td>江西</td>
+                              <td>九江市心理援助热线</td>
+                              <td>0792-8338111</td>
+                              <td>8:00-22:00</td>
+                              <td>九江市第五人民医院</td>
+                              </tr>
+                              <tr>
+                              <td>山东</td>
+                              <td>青岛市心理援助热线</td>
+                              <td>0532-85669120</td>
+                              <td>24小时</td>
+                              <td>青岛市精神卫生中心</td>
+                              </tr>
+                              <tr>
+                              <td>河南</td>
+                              <td>河南省心理援助热线</td>
+                              <td>0373-7095888</td>
+                              <td>24小时</td>
+                              <td>河南省精神卫生中心</td>
+                              </tr>
+                              <tr>
+                              <td>湖北</td>
+                              <td>武汉市心理援助热线</td>
+                              <td>027-85844666</td>
+                              <td>24小时</td>
+                              <td>武汉市精神卫生中心</td>
+                              </tr>
+                              <tr>
+                              <td>湖南</td>
+                              <td>常德市心理援助热线</td>
+                              <td>0736-7870909</td>
+                              <td>24小时</td>
+                              <td>常德市康复医院</td>
+                              </tr>
+                              <tr>
+                              <td>广东</td>
+                              <td>深圳市心理援助热线</td>
+                              <td>0755-25629459</td>
+                              <td>24小时</td>
+                              <td>深圳市康宁医院</td>
+                              </tr>
+                              <tr>
+                              <td>广西</td>
+                              <td>广西自治区心理援助热线</td>
+                              <td>0772-3136120</td>
+                              <td>24小时</td>
+                              <td>广西壮族自治区脑科医院</td>
+                              </tr>
+                              <tr>
+                              <td>海南</td>
+                              <td>海南省心理援助热线</td>
+                              <td>0898-96363-1</td>
+                              <td>8:00-12:00 14:30-17:30</td>
+                              <td>海南省精神卫生中心</td>
+                              </tr>
+                              <tr>
+                              <td>重庆</td>
+                              <td>重庆市心理援助热线</td>
+                              <td>023-96320-1</td>
+                              <td>24小时</td>
+                              <td>重庆市卫健委</td>
+                              </tr>
+                              <tr>
+                              <td>四川</td>
+                              <td>成都市心理援助热线</td>
+                              <td>028-87577510</td>
+                              <td>24小时</td>
+                              <td>成都市第四人民医院</td>
+                              </tr>
+                              <tr>
+                              <td>贵州</td>
+                              <td>安顺市心理援助热线</td>
+                              <td>0851-33252091</td>
+                              <td>24小时</td>
+                              <td>贵航集团 302 医院</td>
+                              </tr>
+                              <tr>
+                              <td>云南</td>
+                              <td>昆明市心理援助热线</td>
+                              <td>0871-65011111</td>
+                              <td>24小时</td>
+                              <td>昆明市心理危机研究与干预中心</td>
+                              </tr>
+                              <tr>
+                              <td>甘肃</td>
+                              <td>甘肃省心理援助热线</td>
+                              <td>0931-4921333</td>
+                              <td>24小时</td>
+                              <td>甘肃省精神卫生中心</td>
+                              </tr>
+                              <tr>
+                              <td>青海</td>
+                              <td>青海省心理援助热线</td>
+                              <td>0971-8140371</td>
+                              <td>24小时</td>
+                              <td>青海省第三人民医院</td>
+                              </tr>
+                              <tr>
+                              <td>新疆</td>
+                              <td>石河子市心理援助热线</td>
+                              <td>0993-2851261</td>
+                              <td>24小时</td>
+                              <td>新疆石河子绿洲医院</td>
+                              </tr>
+                              <tr>
+                              <td>内蒙古</td>
+                              <td>内蒙古自治区心理援助热线</td>
+                              <td>0471-12320-5</td>
+                              <td>24小时</td>
+                              <td>内蒙古自治区第三医院</td>
+                              </tr>
+                        <!-- 更多热线可按同样格式添加 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 参考文献 -->
+        <section class="references">
+            <h3>参考文献</h3>
+            <p>(1) 2021 年全球疾病负担 [在线数据库]。西雅图：卫生计量和评估研究所；2024年（https://vizhub.healthdata.org/gbd-results/，2025年8月13日访问）。</p>
+            <p>(2) Woody CA、Ferrari AJ、Siskind DJ、Whiteford HA、Harris MG。围产期抑郁症患病率和发病率的系统评价和元回归分析。《情感障碍杂志》。2017年；219:86–92。</p>
+            <p>(3) Evans-Lacko S、Aguilar-Gaxiola S、Al-Hamzawi A 等。焦虑、心境障碍和物质使用障碍患者精神卫生治疗差距的社会经济差异：来自世界卫生组织世界精神卫生（WMH）调查的结果。《心理医学》。2018年；48(9):1560-1571。</p>
+        </section>
+    </div>
+
+    <!-- 弹窗模板 -->
+    <div id="myth1" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('myth1')">&times;</span>
+            <h3>真相：</h3>
+            <p>抑郁症并非简单的情绪波动，也不是所理解的心思想法多、不够坚强，更不是在"无病呻吟"。抑郁症其实是一种较为复杂的精神障碍，发病机制涉及遗传、神经生化、心理社会等因素。此外，悲观的人格特质、应激性生活事件、严重的慢性疾病等，也可能诱发抑郁症的出现。</p>
+        </div>
+    </div>
+
+    <div id="myth2" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('myth2')">&times;</span>
+            <h3>真相：</h3>
+            <p>有抑郁情绪并不一定就是得了抑郁症。因为生活中都可能因为遭受的困难、打击等产生抑郁情绪，但是一般持续时间较短，并且会随着问题的解决而好转，不会对生活产生明显影响。而抑郁症的症状通常会持续较长时间，至少两周以上，甚至可能持续数月、数年，不会因为日常变化而轻易缓解。不仅如此，抑郁症还会对患者正常的生活、认知功能下降等产生影响，甚至可能有伤害自己的行为。</p>
+        </div>
+    </div>
+
+    <div id="myth3" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('myth3')">&times;</span>
+            <h3>真相：</h3>
+            <p>平时乐观开朗的人，也有患抑郁症的风险。因为抑郁症是多因素导致的疾病，并非单一由性格决定。乐观开朗的人同样可能遭遇重大的生活变故、失败打击，进而带来较大的心理压力和痛苦，并发展为抑郁症。此外，还有一种微笑抑郁症，患者可能将"乐观开朗"作为自己对外展现的"面具"，但内心深处却隐藏着痛苦。</p>
+        </div>
+    </div>
+
+    <div id="myth4" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('myth4')">&times;</span>
+            <h3>真相：</h3>
+            <p>仅靠自己的意志力往往很难战胜抑郁症。意志力虽然能够发挥一定作用，但是无法直接改变患者大脑的生理结构和功能，无法应对生物学因素引起的抑郁症。此外，患者病情严重时，心理状态、认知功能等都可能发生改变，患者往往很难有足够的意志力去对抗疾病。因此，患者需要及时就医，通过使用药物、心理干预、物理疗法等方式进行治疗。</p>
+        </div>
+    </div>
+
+    <div id="family1" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('family1')">&times;</span>
+            <h3>1. 克服耻感，了解抑郁症</h3>
+            <p>当亲友得了抑郁症，你可能会产生一定程度的羞耻感，这种耻感会在无意识之中影响你对 ta 的态度。比如和旁人提起 ta 时欲言又止，小心翼翼地过分保护或过分责怪……这些都可能会被抑郁症患者捕捉到。</p>
+            <p style="margin-top: 15px;">当你想去支持 ta，首先要厘清自己的感受和看法，克服偏见。最好的方式，是先看一些抑郁症相关的书籍和影视剧，了解抑郁症到底是什么、患者的身体和内心又会经历什么，然后坦诚地和 ta 聊一聊，会有很大的帮助。</p>
+        </div>
+    </div>
+
+    <div id="family2" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('family2')">&times;</span>
+            <h3>2. 做一个倾听者，保持开放和理解</h3>
+            <p>放下批判的想法，例如「你这就是懒/自私/闲的/想太多」「坚强一些」「你太矫情了」「抗压能力太差了」。</p>
+            <p style="margin-top: 15px;">也不要轻易说「我理解」，除非你真的有过切身体验，真诚地说「我不明白，但我真的想知道」会让人感觉更好。</p>
+            <p style="margin-top: 15px;">你可以做一个温暖的倾听者，不试图「修复」对方，也不期望 ta 按照你想要的方式和速度好起来。提供情绪和心理上的支持，让 ta 有一个安全的空间释放被压抑的情绪。向 ta 传递「无论你怎样，我仍然爱你」「你对我很重要」「无论如何我都在你身边」「这不意味着你脆弱或有缺陷」的信息。</p>
+        </div>
+    </div>
+
+    <div id="family3" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('family3')">&times;</span>
+            <h3>3. 设定支持边界，照顾好自己</h3>
+            <p>不要「过度消耗自己」，保持对自己情绪的觉察。问问自己是否过度焦虑、担心、甚至是生气，导致对 ta 的不耐烦和责怪？或者在陪伴的时候，产生强烈的无助和内疚感，以至于想要远离。</p>
+            <p style="margin-top: 15px;">请记得，在支持 ta 的时候，你首先要照顾好自己的情绪和生活，明白自己的能力和界限，让 ta 知道，你不会一天 24 小时围着他们转，你也有自己的生活。</p>
+        </div>
+    </div>
+
+    <div id="family4" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('family4')">&times;</span>
+            <h3>4. 温柔地督促治疗</h3>
+            <p>可以主动问对方，要不要一起去医院或者去看心理咨询师。但有些抑郁者不想去医院，不想吃药，不想见咨询师。可能是因为生病导致的消沉疲惫，可能是因为病耻感，也可能是因为害怕治不好。向 ta 保证，就像任何其他的医学疾病一样，抑郁症是可以治的。</p>
+        </div>
+    </div>
+
+    <div id="family5" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('family5')">&times;</span>
+            <h3>5. 识别危险征兆</h3>
+            <p>如果你发现 ta 有自杀的风险，首先要陪在 ta 身边。然后，尽快告诉对方你的担忧。很多人不愿意谈论死亡这件事，或者认为谈论死亡会增加对方自杀的可能，但事实并不会这样。开诚布公地和对方谈论他自杀的想法和感觉，能够增加拯救对方生命的可能性。</p>
+            <p style="margin-top: 15px;">但如果你感到自己很难做到扭转对方的想法，或者情况危急，请立即寻求专业的帮助，在非常紧急的情况下，你可以拨打报警电话让当事人强制住院治疗，这听起来让人害怕，但有时也是不得已为之的保护措施。</p>
+        </div>
+    </div>
+
+    <script>
+        // 弹窗功能
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        // 点击弹窗外部关闭
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // PHQ-9评分功能
+        function calculatePHQ9() {
+            let total = 0;
+            for (let i = 1; i <= 9; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) {
+                    total += parseInt(selected.value);
+                }
+            }
+            let resultText = '';
+            if (total >= 0 && total <= 4) {
+                resultText = `<strong>得分：${total}分</strong><br>无抑郁症状。`;
+            } else if (total >= 5 && total <= 9) {
+                resultText = `<strong>得分：${total}分</strong><br>可能轻度抑郁，你可能有轻微抑郁症的症状，不妨散散步，让自己放松一下，也可以向你的朋友和家人表达你的感受。`;
+            } else if (total >= 10 && total <= 14) {
+                resultText = `<strong>得分：${total}分</strong><br>可能中度抑郁，建议寻求专业人士评估，例如精神科医生、临床心理学家。`;
+            } else if (total >= 15 && total <= 19) {
+                resultText = `<strong>得分：${total}分</strong><br>可能中重度抑郁，建议寻求专业人士评估，例如精神科医生、临床心理学家。`;
+            } else if (total >= 20 && total <= 27) {
+                resultText = `<strong>得分：${total}分</strong><br>可能重度抑郁，建议寻求专业人士评估，例如精神科医生、临床心理学家。`;
+            } else {
+                resultText = '请完成所有问题后再查看结果。';
+            }
+            const resultDiv = document.getElementById('phq9Result');
+            resultDiv.innerHTML = resultText;
+            resultDiv.style.display = 'block';
+        }
+
+        // 知识闯关功能
+        let quizAnswers = {
+            1: 'B', 2: 'A', 3: 'C', 4: 'B', 5: 'C', 6: 'A'
+        };
+        let userAnswers = {};
+
+        // 绑定选项点击事件
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const question = this.closest('.quiz-question');
+                const qNum = Array.from(document.querySelectorAll('.quiz-question')).indexOf(question) + 1;
+                // 清除同题其他选项的选中样式
+                question.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.style.background = '#f0f0f0';
+                });
+                // 标记当前选中
+                this.style.background = '#e0e0e0';
+                userAnswers[qNum] = this.dataset.option;
+            });
+        });
+
+        function submitQuiz() {
+            let score = 0;
+            const questions = document.querySelectorAll('.quiz-question');
+            questions.forEach((question, index) => {
+                const qNum = index + 1;
+                const correctAnswer = quizAnswers[qNum];
+                const options = question.querySelectorAll('.quiz-option');
+                options.forEach(opt => {
+                    if (opt.dataset.option === correctAnswer) {
+                        opt.classList.add('correct');
+                    } else if (userAnswers[qNum] === opt.dataset.option && opt.dataset.option !== correctAnswer) {
+                        opt.classList.add('wrong');
+                    }
+                });
+                if (userAnswers[qNum] === correctAnswer) {
+                    score++;
+                }
+            });
+
+            let resultText = `<strong>你的得分：${score}/6</strong><br>`;
+            if (score >= 5) {
+                resultText += '非常棒！你对抑郁症知识了解得很好。';
+            } else {
+                resultText += '还需继续了解学习哦！';
+            }
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.innerHTML = resultText;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
